@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 export default function Player({ initialName, symbol ,isActive}) {
     const [isEditting, setIsEditting] = useState(false);
     const [playerName, setPlayerName] = useState(initialName)
