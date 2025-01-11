@@ -20,6 +20,10 @@ function getActivePlayer(turns){
 
 function App() {
 // const[activePlayer,setActivePlayer] = useState('X');
+const [playersName, setPlayersNames] = useState({
+  'X': 'Player 1',
+  'O': 'Player 2',
+});
 const [gameTurn,setGameTurn] = useState([]);
 const activePlayer = getActivePlayer(gameTurn);
 let gameBoard = [...initialGameBoard.map(innerArr=> [...innerArr])];
@@ -33,14 +37,13 @@ let Winner;
 
 
 for(let combinaton of WINNING_COMBINATIONS){
-  debugger;
   const firstSquare = gameBoard[combinaton[0].row][combinaton[0].column];
   const secondSquare = gameBoard[combinaton[1].row][combinaton[1].column];
   const thirdSquare = gameBoard[combinaton[2].row][combinaton[2].column];
 
 
   if(firstSquare && firstSquare == secondSquare && firstSquare == thirdSquare){
-    Winner = firstSquare;
+    Winner = playersName[firstSquare];
   }
 }
 
@@ -59,6 +62,10 @@ function hadnleSelectSquare(rowIndex,colIndex){
 
   })
 }
+
+function handlePlayerNameChange(playerName,symbol){
+  setPlayersNames(playersName=> {return {...playersName, [symbol]:playerName}})
+}
 function modalClose(){
   setGameTurn([]);
 }
@@ -67,8 +74,8 @@ function modalClose(){
       <main>
         <div id="game-container">
           <ol id="players" className="highlight-player">
-            <Player initialName="Player-1" symbol="X"  isActive={activePlayer == 'X'}/>
-            <Player initialName="player-2" symbol="O" isActive={activePlayer == 'O'} />
+            <Player initialName="Player-1" symbol="X"  isActive={activePlayer == 'X'} playerNameChange={(playerName,symbol)=>handlePlayerNameChange(playerName,symbol)}/>
+            <Player initialName="player-2" symbol="O" isActive={activePlayer == 'O'} playerNameChange={(playerName,symbol)=>handlePlayerNameChange(playerName,symbol)}/>
 
           </ol>
           { (Winner|| hasDraw) && <GameOver  winner={Winner} closeModal={modalClose}/>}
